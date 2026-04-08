@@ -1,25 +1,73 @@
-You are responsible for building a frontier mobile-optimized webapp for BioSync, a human optimization platform.
+# React + TypeScript + Vite
 
-Product Vision: BioSync removes all friction from diet and fitness tracking. Users flow through the app, never fight it. Must provide best UX in this space.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Friction Hierarchy: At every touchpoint, offer inputs in this order of priority: photo first, voice second, manual text entry last. Users should always be able to manually correct any AI-extracted fields.
+Currently, two official plugins are available:
 
-Core User Journey:
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-Onboarding: User snaps a selfie. The model extracts gender, approximate age, and approximate BMI. User confirms or corrects, then proceeds.
-Meal Tracking: User snaps a photo of their meal. The model extracts ingredients, portions, and macros. Voice and manual entry available as alternatives.
-Workout Logging: Voice entry is the primary input. User describes their workout and the model structures it. Photo and manual entry available as alternatives.
-Dashboard: Plots nutrition and fitness data over time with intelligent recommendations throughout.
-Style: Minimalist and modern. Make Apple blush.
+## React Compiler
 
-First Principles:
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Systems thinking first : plan the full user journey and how every technical element facilitates that journey before writing code.
-Simple code that does complex things, not complex code for simple things.
-Tech Stack: Supabase for authentication and database. OpenRouter for LLM and vision. Netlify for deployment.
+## Expanding the ESLint configuration
 
-Requirements: Include a demo account that allows users to experience the full app before entering environment variables.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-Mandate: Research and plan before building. Produce frontier work. Use existing code and write fresh code to produce what should be done, not what has been done.
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
